@@ -23,13 +23,11 @@ public class SerializableListIterator<E> implements SerializableIterator<E>, Lis
 		this.delegate = list.listIterator();
 	}
 
-	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeObject(list);
 		out.writeInt(position);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		list = (List<E>)in.readObject();
@@ -37,52 +35,43 @@ public class SerializableListIterator<E> implements SerializableIterator<E>, Lis
 		delegate = list.listIterator(position);
 	}
 
-	@Override
 	public boolean hasNext() {
 		return delegate.hasNext();
 	}
 
-	@Override
 	public E next() {
 		final E result = delegate.next();
 		position++;
 		return result;
 	}
 
-	@Override
 	public void remove() {
 		delegate.remove();
 		
 	}
 
-	@Override
 	public boolean hasPrevious() {
 		return delegate.hasPrevious();
 	}
 
-	@Override
 	public E previous() {
 		final E result = delegate.previous();
 		position--;
 		return result;
 	}
 
-	@Override
 	public int nextIndex() {
 		return delegate.nextIndex();
 	}
 
-	@Override
 	public int previousIndex() {
 		return delegate.previousIndex();
 	}
 
-	@Override
 	public void set(final E e) {
 		delegate.set(e);
 	}
 
-	@Override
 	public void add(E e) {
 		delegate.add(e);
 	}

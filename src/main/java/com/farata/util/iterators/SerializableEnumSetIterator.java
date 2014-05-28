@@ -21,13 +21,11 @@ public class SerializableEnumSetIterator<E extends Enum<E>> implements Serializa
 		this.delegate = set.iterator();
 	}
 
-	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeObject(set);
 		out.writeInt(latestElementIdx);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		set = (EnumSet<E>)in.readObject();
@@ -44,19 +42,16 @@ public class SerializableEnumSetIterator<E extends Enum<E>> implements Serializa
 		}
 	}
 
-	@Override
 	public boolean hasNext() {
 		return delegate.hasNext();
 	}
 
-	@Override
 	public E next() {
 		final E result = delegate.next();
 		latestElementIdx = result.ordinal();
 		return result;
 	}
 
-	@Override
 	public void remove() {
 		delegate.remove();
 	}

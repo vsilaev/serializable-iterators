@@ -23,7 +23,6 @@ public class SerializableSortedSetIterator<E> implements SerializableIterator<E>
 		this.hasLatestElement = false;
 	}
 
-	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeObject(set);
 		out.writeBoolean(hasLatestElement);
@@ -32,7 +31,6 @@ public class SerializableSortedSetIterator<E> implements SerializableIterator<E>
 		}
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		set = (SortedSet<E>)in.readObject();
@@ -46,12 +44,10 @@ public class SerializableSortedSetIterator<E> implements SerializableIterator<E>
 		}
 	}
 
-	@Override
 	public boolean hasNext() {
 		return delegate.hasNext();
 	}
 
-	@Override
 	public E next() {
 		final E result = delegate.next();
 		latestElement = result;
@@ -59,7 +55,6 @@ public class SerializableSortedSetIterator<E> implements SerializableIterator<E>
 		return result;
 	}
 
-	@Override
 	public void remove() {
 		delegate.remove();
 	}
