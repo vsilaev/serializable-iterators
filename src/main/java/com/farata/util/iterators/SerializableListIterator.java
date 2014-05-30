@@ -10,7 +10,6 @@ import java.util.ListIterator;
 public class SerializableListIterator<E> implements SerializableIterator<E>, ListIterator<E>, Externalizable {
 	
 	private List<E> list;
-	private int position;
 	
 	transient
 	private ListIterator<E> delegate;
@@ -19,20 +18,18 @@ public class SerializableListIterator<E> implements SerializableIterator<E>, Lis
 	
 	public SerializableListIterator(final List<E> list) {
 		this.list = list;
-		this.position  = 0;
 		this.delegate = list.listIterator();
 	}
 
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeObject(list);
-		out.writeInt(position);
+		out.writeInt(delegate.nextIndex());
 	}
 
 	@SuppressWarnings("unchecked")
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		list = (List<E>)in.readObject();
-		position = in.readInt();
-		delegate = list.listIterator(position);
+		delegate = list.listIterator(in.readInt());
 	}
 
 	public boolean hasNext() {
@@ -40,9 +37,7 @@ public class SerializableListIterator<E> implements SerializableIterator<E>, Lis
 	}
 
 	public E next() {
-		final E result = delegate.next();
-		position++;
-		return result;
+		return delegate.next();
 	}
 
 	public void remove() {
@@ -55,9 +50,7 @@ public class SerializableListIterator<E> implements SerializableIterator<E>, Lis
 	}
 
 	public E previous() {
-		final E result = delegate.previous();
-		position--;
-		return result;
+		return delegate.previous();
 	}
 
 	public int nextIndex() {
