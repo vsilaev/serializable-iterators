@@ -20,13 +20,13 @@ public class SerializableIterators {
 			return wrapSortedSet((SortedSet<E>)original);
 		}
 		if (original instanceof EnumSet) {
-			final EnumSet<?> eoriginal = asEnumSet(original);
 			@SuppressWarnings("unchecked")
-			final Iterable<E> result = (Iterable<E>)wrapEnumSet(eoriginal);
+			final Iterable<E> result = (Iterable<E>)wrapEnumSet0(original);
 			return result;
 		}
 		return null;
 	}
+	
 	
 	/* <E extends Serializable, C extends List<E> & RandomAccess & Serializable> */
 	public static <E> Iterable<E> from(final List<E> list) {
@@ -73,6 +73,13 @@ public class SerializableIterators {
 		}; 	
 	}
 	
+	private static <E extends Enum<E>> Iterable<E> wrapEnumSet0(final Collection<?> original) {
+		@SuppressWarnings("unchecked")
+		final Collection<E> collection = (Collection<E>)original;
+		final EnumSet<E> enumSet = (EnumSet<E>)collection;
+		return wrapEnumSet(enumSet);
+	}
+	
 	public static <E extends Enum<E>> Iterable<E> wrapEnumSet(final EnumSet<E> sortedSet) {
 		return new SerializableIterable<E>() {
 			final private static long serialVersionUID = 1L;
@@ -103,9 +110,4 @@ public class SerializableIterators {
 		}; 		
 	}
 
-	
-	@SuppressWarnings("unchecked")
-	private static <E extends Enum<E>> EnumSet<E> asEnumSet(final Collection<?> collection) {
-		return (EnumSet<E>)collection;
-	}
 }
